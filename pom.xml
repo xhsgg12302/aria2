@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.framework</groupId>
+    <artifactId>aria2</artifactId>
+    <version>1.36.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- pom.xml -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- see: https://github.com/apache/maven-assembly-plugin/blob/master/src/main/resources/assemblies/jar-with-dependencies.xml -->
+                    <descriptorRefs>
+                        <descriptorRef>project</descriptorRef>
+                    </descriptorRefs>
+
+                    <!--<finalName>aria2</finalName>-->
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <!-- see: https://stackoverflow.com/questions/15530453/how-to-stop-the-maven-assembly-plugin-from-deploying-the-artifact-it-creates -->
+                    <attach>false</attach>
+
+                    <formats>
+                        <format>tar.xz</format>
+                        <format>tar.gz</format>
+                        <format>tar.bz2</format>
+                        <format>zip</format>
+                    </formats>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.haohuo.framework</groupId>
+                <artifactId>github-release-maven-plugin</artifactId>
+                <version>1.3.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <!--<phase>verify</phase>
+                        <goals>
+                            <goal>github-release</goal>
+                        </goals>-->
+                        <configuration>
+                            <owner>xhsgg12302</owner>
+                            <repository>aria2</repository>
+                            <server>github-release-oauth</server>
+                            <tagName>${project.version}</tagName>
+                            <name>${project.version}</name>
+                            <targetCommitish>master</targetCommitish>
+                            <body>github-release-maven-plugin test</body>
+                            <!--<releaseNotes>src/main/resources/release-notes-example.md</releaseNotes>-->
+                            <assets>
+                                <asset>${project.build.directory}/${project.build.finalName}.tar.xz</asset>
+                                <asset>${project.build.directory}/${project.build.finalName}.tar.gz</asset>
+                                <asset>${project.build.directory}/${project.build.finalName}.tar.bz2</asset>
+                                <asset>${project.build.directory}/${project.build.finalName}.zip</asset>
+                            </assets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
